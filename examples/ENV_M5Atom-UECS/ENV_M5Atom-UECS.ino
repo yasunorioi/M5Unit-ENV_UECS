@@ -17,13 +17,13 @@
 #include <WiFi.h>
 #include <WiFiMulti.h>
 #include <WiFiUdp.h>
-
+#include "config.h"
 DHT12 dht;
 BMP280 bmp;
 WiFiUDP udp;
 
-const char *ssid     = "aterm-a19a3a-a";
-const char *password = "171402eae49ae";
+const char *ssid     = SSID;
+const char *password = PASSWORD;
 const IPAddress ip(192, 168, 1, 74);
 const IPAddress gateway(192, 168, 1, 70);
 const IPAddress subnet(255, 255, 255, 0);
