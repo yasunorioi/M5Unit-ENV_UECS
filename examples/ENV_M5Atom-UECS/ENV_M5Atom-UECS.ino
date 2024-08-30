@@ -16,19 +16,21 @@
 #include <M5Atom.h>
 #include <WiFi.h>
 #include <WiFiMulti.h>
+#include <WiFiUdp.h>
 
 DHT12 dht;
 BMP280 bmp;
+WiFiUDP udp;
 
-const char *ssid     = "aterm-03e34d-a";
-const char *password = "38027f7faf81e";
+const char *ssid     = "aterm-a19a3a-a";
+const char *password = "171402eae49ae";
 const IPAddress ip(192, 168, 1, 74);
 const IPAddress gateway(192, 168, 1, 70);
 const IPAddress subnet(255, 255, 255, 0);
 const IPAddress dns1(192, 168, 1, 70);
 const String name ="test";
 const String type ="cMC";
-const int room = 1;
+const String room = "1";
 const String region = "4";
 const String order = "1";
 const String priority = "2";
@@ -100,20 +102,26 @@ void loop() {
         Serial.println("-------------\r\n");
     }
     delay(1000);*/
-   WiFiClient client;
-   if (!client.connect(host,port)){
+  // WiFiClient client;
+/*   if (!client.connect(host,port)){
     Serial.println("connection falied");
     return;
-   }
+   }*/
+   
    String msg;
    msg  = "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\">";
    msg += "<DATA type=\"" + name + "." + type + "\"";
-   msg += "room=" + "\"" + room + "\"";
-   msg += "region=" + "\"" + region + "\"";
-   msg += "order=" + "\"" + order + "\"";
-   msg += "priority=" + "\"" + priority + "\"";
+   msg += "room=\"" + room + "\"";
+   msg += "region=\"" + region + "\"";
+   msg += "order=\"" + order + "\"";
+   msg += "priority=\"" + priority + "\"";
    msg += bmp.cTemp;
    msg += "</DATA>";
+   msg += "<IP>"+String (host)+"</IP></UECS>";
+//   client.print(msg);
+   udp.beginPacket(host,port);
+   udp.println(msg);
+   udp.endPacket();
    Serial.println(msg);
   //client.print(msg);
   delay(5000);
