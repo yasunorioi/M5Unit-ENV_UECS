@@ -28,14 +28,15 @@ const IPAddress ip(192, 168, 1, 74);
 const IPAddress gateway(192, 168, 1, 70);
 const IPAddress subnet(255, 255, 255, 0);
 const IPAddress dns1(192, 168, 1, 70);
-const String name ="test";
-const String type ="cMC";
+const String ccmname ="test";
+const String ccmtype ="cMC";
 const String room = "1";
 const String region = "4";
 const String order = "1";
 const String priority = "2";
-const char* host ="192.168.1.70";
+const String host ="192.168.1.70";
 const int port = 16520;
+const IPAddress castaddress(255,255,255,255);
 WiFiMulti WiFiMulti;
 
 void setup() {
@@ -77,52 +78,35 @@ void setup() {
 }
 
 void loop() {
-   /* if (dht.update()) {
-        Serial.println("-----DHT12-----");
-        Serial.print("Temperature: ");
-        Serial.print(dht.cTemp);
-        Serial.println(" degrees C");
-        Serial.print("Humidity: ");
-        Serial.print(dht.humidity);
-        Serial.println("% rH");
-        Serial.println("-------------\r\n");
+    if (dht.update()) {
+        CCM_send("dhtcTemp",dht.cTemp);
+        CCM_send("dhthumidity",dht.humidity);
     }
 
     if (bmp.update()) {
-        Serial.println("-----BMP280-----");
-        Serial.print(F("Temperature: "));
-        Serial.print(bmp.cTemp);
-        Serial.println(" degrees C");
-        Serial.print(F("Pressure: "));
-        Serial.print(bmp.pressure);
-        Serial.println(" Pa");
-        Serial.print(F("Approx altitude: "));
-        Serial.print(bmp.altitude);
-        Serial.println(" m");
-        Serial.println("-------------\r\n");
+        CCM_send("bmpcTemp",bmp.cTemp);
+        CCM_send("bmppressure",bmp.pressure);
+        CCM_send("bmpaltitude",bmp.altitude);
     }
-    delay(1000);*/
-  // WiFiClient client;
-/*   if (!client.connect(host,port)){
-    Serial.println("connection falied");
-    return;
-   }*/
-   
+    delay(1000);
+}
+
+int CCM_send (String sensorname,int val){
    String msg;
-   msg  = "<?xml version=\"1.0\"?><UECS ver=\"1.00-E10\">";
-   msg += "<DATA type=\"" + name + "." + type + "\"";
-   msg += "room=\"" + room + "\"";
-   msg += "region=\"" + region + "\"";
-   msg += "order=\"" + order + "\"";
-   msg += "priority=\"" + priority + "\"";
-   msg += bmp.cTemp;
-   msg += "</DATA>";
-   msg += "<IP>"+String (host)+"</IP></UECS>";
-//   client.print(msg);
-   udp.beginPacket(host,port);
+   msg  = "<?xml version=\"1.0\"?>\r\n<UECS ver=\"1.00-E10\">\r\n";
+   msg += "<DATA type=\"" + ccmname + sensorname + "." + ccmtype + "\" ";
+   msg += "room=\"" + room + "\" ";
+   msg += "region=\"" + region + "\" ";
+   msg += "order=\"" + order + "\" ";
+   msg += "priority=\"" + priority + "\">\r\n";
+   msg += val;
+   msg += "\r\n</DATA>\r\n";
+   msg += "<IP>"+host+"</IP></UECS>";
+   Serial.println(msg);
+   udp.beginPacket(castaddress,port);
    udp.println(msg);
    udp.endPacket();
-   Serial.println(msg);
-  //client.print(msg);
-  delay(5000);
+   delay(1000);
+  int n = Serial.println(msg);
+return n;
 }

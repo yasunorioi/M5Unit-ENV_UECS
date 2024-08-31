@@ -34,8 +34,9 @@ const String room = "1";
 const String region = "4";
 const String order = "1";
 const String priority = "2";
-const char* host ="192.168.1.70";
+const String host ="192.168.1.70";
 const int port = 16520;
+const IPAddress castaddress(255,255,255,255);
 WiFiMulti WiFiMulti;
 
 void setup() {
@@ -131,11 +132,13 @@ int CCM_send (String sensorname,int val){
    msg += "priority=\"" + priority + "\">\r\n";
    msg += val;
    msg += "\r\n</DATA>\r\n";
-   msg += "<IP>"+String (host)+"</IP></UECS>";
+   msg += "<IP>"+host+"</IP></UECS>";
+   Serial.println(msg);
 //   client.print(msg);
-/*   udp.beginPacket(host,port);
+   udp.beginPacket(castaddress,port);
    udp.println(msg);
    udp.endPacket();
-*/  int n = Serial.println(msg);
+   delay(1000);
+  int n = Serial.println(msg);
 return n;
 }
