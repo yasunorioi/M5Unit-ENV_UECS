@@ -37,6 +37,12 @@ const String priority = "2";
 const String host ="192.168.1.70";
 const int port = 16520;
 const IPAddress castaddress(255,255,255,255);
+
+const String sht4cTemp = "sht4cTemp";
+const String sht4humidity = "sht4humidity";
+const String bmpcTemp = "bmpcTemp";
+const String bmppressure = "bmppressure";
+const String bmpaltitude = "bmpaltitude";
 WiFiMulti WiFiMulti;
 
 void setup() {
@@ -83,40 +89,14 @@ void setup() {
 }
 
 void loop() {
-   /*     if (sht4.update()) {
-        Serial.println("-----SHT4X-----");
-        Serial.print("Temperature: ");
-        Serial.print(sht4.cTemp);
-        Serial.println(" degrees C");
-        Serial.print("Humidity: ");
-        Serial.print(sht4.humidity);
-        Serial.println("% rH");
-        Serial.println("-------------\r\n");
-    }
-
-    if (bmp.update()) {
-        Serial.println("-----BMP280-----");
-        Serial.print(F("Temperature: "));
-        Serial.print(bmp.cTemp);
-        Serial.println(" degrees C");
-        Serial.print(F("Pressure: "));
-        Serial.print(bmp.pressure);
-        Serial.println(" Pa");
-        Serial.print(F("Approx altitude: "));
-        Serial.print(bmp.altitude);
-        Serial.println(" m");
-        Serial.println("-------------\r\n");
-    }
-    delay(1000);
-    */
    if (sht4.update()){
-    CCM_send ("sht4cTemp",sht4.cTemp);
-    CCM_send ("sht4humidity",sht4.humidity);
+    CCM_send (sht4cTemp,sht4.cTemp);
+    CCM_send (sht4humidity,sht4.humidity);
    }
    if (bmp.update()){
-    CCM_send ("bmpcTemp",bmp.cTemp);
-    CCM_send ("bmppressure",bmp.pressure);
-    CCM_send ("bmpaltitude",bmp.altitude);
+    CCM_send (bmpcTemp,bmp.cTemp);
+    CCM_send (bmppressure,bmp.pressure);
+    CCM_send (bmpaltitude,bmp.altitude);
    }
 
   delay(5000);

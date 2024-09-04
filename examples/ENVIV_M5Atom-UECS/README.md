@@ -8,3 +8,8 @@ make config.h file
 Reference
 
 https://bitbucket.org/bigbearfarm/esp32_uecs/src/master/
+
+
+Note
+
+Not implemented WDT(watch dog timer)
