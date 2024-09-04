@@ -34,9 +34,15 @@ const String room = "1";
 const String region = "4";
 const String order = "1";
 const String priority = "2";
-const String host ="192.168.1.70";
+const String host = "192.168.1.70";
 const int port = 16520;
 const IPAddress castaddress(255,255,255,255);
+const String dhtcTemp = "dhtcTemp";
+const String dhthumidity = "dhthumidity";
+const String bmpcTemp = "bmpcTemp";
+const String bmppressure = "bmppressure";
+const String bmpaltitude = "bmpaltitude";
+
 WiFiMulti WiFiMulti;
 
 void setup() {
@@ -79,14 +85,14 @@ void setup() {
 
 void loop() {
     if (dht.update()) {
-        CCM_send("dhtcTemp",dht.cTemp);
-        CCM_send("dhthumidity",dht.humidity);
+        CCM_send(dhtcTemp,dht.cTemp);
+        CCM_send(dhthumidity,dht.humidity);
     }
 
     if (bmp.update()) {
-        CCM_send("bmpcTemp",bmp.cTemp);
-        CCM_send("bmppressure",bmp.pressure);
-        CCM_send("bmpaltitude",bmp.altitude);
+        CCM_send(bmpcTemp,bmp.cTemp);
+        CCM_send(bmppressure,bmp.pressure);
+        CCM_send(bmpaltitude,bmp.altitude);
     }
     delay(1000);
 }
